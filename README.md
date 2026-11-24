@@ -3,193 +3,75 @@
 > ## ⚠️ WIP — under arbeid, ikke klart til bruk (24.11.2026)
 > Dette prosjektet er under aktiv utvikling og **kan ikke brukes i produksjon ennå**. Flere funksjoner (apps, artefakter, varsler, cron, opplasting, modellvelger, slash-kommandoer) er stubbet eller mangler. Status per metode: **[docs/HERMES.md](./docs/HERMES.md)**.
 
+**Et generativt UI-arbeidsrom for [Hermes Agent](https://github.com/NousResearch/hermes-agent).** Agentens svar rendres som levende, interaktive komponenter (dashboards, tabeller, skjemaer, diagrammer) med [OpenUI](https://github.com/thesysdev/openui), og chatten går mot Hermes' egen gateway-protokoll: JSON-RPC over WebSocket (`/api/ws`).
 
-> **Fork of [thesysdev/openclaw-os](https://github.com/thesysdev/openclaw-os) (MIT)** that talks to **Hermes Agent's native gateway protocol** (`/api/ws`, JSON-RPC) instead of the OpenClaw gateway. Branch: `hermes-native`.
-> Setup, method map (works / stub / missing) and open items: **[docs/HERMES.md](./docs/HERMES.md)**.
-> The rest of this README is the unchanged upstream text for OpenClaw OS.
+OpenHermes OS er en **fork** av [thesysdev/openclaw-os](https://github.com/thesysdev/openclaw-os) (MIT) @ `076ae63`, som opprinnelig er laget for [OpenClaw](https://github.com/openclaw/openclaw). Hermes Agent er ikke endret; forken er bare et UI foran den. Se [Kreditering](#kreditering).
 
----
+## Status (24.11.2026)
 
-<div align="center">
+Fase 1 er ferdig: transporten er byttet fra OpenClaw-gatewayen til Hermes (`HermesEngine`). Det meste av chatten virker mot en ekte Hermes 0.23.2; resten er stubbet. Tabell per metode, verifiserte kjøringer og åpne spørsmål: **[docs/HERMES.md](./docs/HERMES.md)**.
 
-<a href="https://www.openui.com/openclaw-os" target="_blank" rel="noopener noreferrer">
-<img src="./assets/openclaw-os-hero.png" alt="OpenClaw OS — the workspace for OpenClaw" width="100%">
-</a>
+| Virker | Stubbet / mangler |
+|---|---|
+| koble til, liste og åpne sesjoner, sende melding, strømming, resonnering, verktøykort, avbryt | apps, artefakter, varsler, cron, opplasting, `tools.invoke` |
+| | modellvelger, slash-kommandoer, clarify-spørsmål, godkjenningskort (kode finnes, ikke kjørt) |
+| | OpenUI Lang-prompten mot Hermes-sesjoner (ikke koblet på ennå) |
 
-# OpenClaw OS — The default workspace for OpenClaw
+Hva som må portere fra OpenClaw til Hermes, med fil:linje-bevis: **[docs/PORTING.md](./docs/PORTING.md)**. Foreslått rekkefølge videre (fase 2 = apps og varsler som Hermes-plugin): **[docs/ROADMAP.md](./docs/ROADMAP.md)**.
 
-[![Build & Check](https://github.com/thesysdev/openclaw-os/actions/workflows/build.yml/badge.svg)](https://github.com/thesysdev/openclaw-os/actions/workflows/build.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
-[![Discord](https://img.shields.io/badge/Discord-Chat-7289da?logo=discord&logoColor=white)](https://discord.com/invite/Pbv5PsqUSv)
+## Slik virker det
 
-</div>
+```
+Nettleser (Next dev :18790)
+  └─ HermesEngine ──(JsonRpcGatewayClient, vendored fra Hermes)──▶ ws://127.0.0.1:18791/hermes/ws   (bridge)
+                                                                    └─ innlogging + ws-ticket ─▶ ws://127.0.0.1:9119/api/ws  (Hermes-dashboardet)
+```
 
-OpenClaw reads emails, manages files, runs scripts, and schedules work across tools. But people drive it from Telegram, Discord, or Slack. Chat falls apart fast: everything scrolls away, work gets buried, and you can't see what's running or done.
+I dev går nettleseren via en liten bridge (`packages/claw-client/scripts/hermes-bridge.mjs`) som logger inn på dashboardet og henter en WebSocket-ticket. Detaljer og hvorfor: [docs/HERMES.md](./docs/HERMES.md#setup).
 
-**OpenClaw-OS** is the missing interface. A workspace built for your agents. Sessions stay organized. Answers render as live, interactive apps (charts, tables, forms, dashboards) that persist, refresh with new data, and update from a prompt instead of a rebuild.
+## Kom i gang (dev)
 
----
-
-[Website](https://openui.com/openclaw-os) · [OpenUI Docs](https://openui.com) · [OpenClaw](https://github.com/openclaw/openclaw) · [Discord](https://discord.com/invite/Pbv5PsqUSv) · [Contributing](./CONTRIBUTING.md) · [Code of Conduct](./CODE_OF_CONDUCT.md) · [Security](./SECURITY.md) · [License](./LICENSE)
-
----
-## Quick Start
-
-Install OpenClaw OS into an existing OpenClaw setup with the command for your platform:
-
-macOS or Linux:
+Krever Node ≥ 20, pnpm og et kjørende Hermes-dashboard på `127.0.0.1:9119` med dashboard-innlogging.
 
 ```bash
-curl -fsSL https://openui.com/openclaw-os/install.sh | bash
+pnpm install
+cd packages/claw-client
+export HERMES_DASH_USER=…  HERMES_DASH_PASSWORD=…   # holdes utenfor repoet
+pnpm dev:hermes                                     # bridge :18791 + UI :18790
 ```
 
-Windows:
+Miljøvariabler og alternativer: [docs/HERMES.md](./docs/HERMES.md#setup). Bidra: [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-```powershell
-powershell -c "irm https://openui.com/openclaw-os/install.ps1 | iex"
-```
+## Pakker
 
-The installer downloads the latest source, builds the workspace UI, registers it as an OpenClaw plugin, restarts the gateway, and opens the dashboard in your browser.
+| Pakke | Rolle i forken |
+|---|---|
+| [`packages/claw-client`](./packages/claw-client) (`@openuidev/claw-client`) | Selve UI-et (Next.js + OpenUI-renderer) og `HermesEngine`. **Aktiv.** |
+| [`packages/claw-plugin`](./packages/claw-plugin) (`@openuidev/openclaw-os-plugin`) | OpenClaw-plugin fra upstream (apps/artefakter/varsler/opplasting, OpenUI-prompt). **Ikke i bruk mot Hermes**; skal portes til en Hermes-plugin i fase 2. Se [docs/PORTING.md](./docs/PORTING.md). |
 
-or through published package
+Pakkemappene og pakkenavnene er beholdt fra upstream med vilje, slik at diffen mot upstream er lesbar. Ingen av pakkene publiseres fra denne forken (`@openuidev` er Thesys' npm-scope).
 
-```bash
-openclaw plugins install @openuidev/openclaw-os-plugin
-openclaw gateway restart
-openclaw os url
-```
+## Kreditering
 
+OpenHermes OS bygger på andres åpne kildekode. Alt under er MIT-lisensiert; lisensene er sjekket mot kildene 24.11.2026 (se [NOTICE](./NOTICE) for fullstendig oversikt).
 
-> The workspace runs at `http://localhost:18789/plugins/openclawos`; run **`openclaw os url`** for the pre-authenticated URL.
->
-> Don't have OpenClaw yet? Install it first from [openclaw.ai](https://openclaw.ai/install.sh), then run the matching command above.
->
-> Installing from a local clone: see [`CONTRIBUTING.md`](./CONTRIBUTING.md).
+| Prosjekt | Hva vi bruker | Lisens | Kilde |
+|---|---|---|---|
+| **[Thesys](https://www.thesys.dev) / [OpenUI](https://github.com/thesysdev/openui)** | OpenUI Lang og React-rendereren (`@openuidev/react-lang`, `react-ui`, `react-headless`); OpenClaw OS selv er laget av Thesys Inc | MIT, © 2026 Thesys Inc ([openclaw-os](https://github.com/thesysdev/openclaw-os/blob/main/LICENSE)); © 2011–2024 Thesys Inc. ([openui](https://github.com/thesysdev/openui/blob/main/LICENSE)) | [thesysdev/openclaw-os](https://github.com/thesysdev/openclaw-os), [thesysdev/openui](https://github.com/thesysdev/openui) |
+| **[OpenClaw](https://github.com/openclaw/openclaw)** | Gateway-protokollen og plugin-API-et som upstream er bygget mot; vi porterer *bort* fra den | MIT, © 2026 OpenClaw Foundation | [LICENSE](https://github.com/openclaw/openclaw/blob/main/LICENSE) |
+| **[Hermes Agent](https://github.com/NousResearch/hermes-agent) / [Nous Research](https://nousresearch.com)** | Agenten og gateway-protokollen vi snakker med; to filer er kopiert inn og én er en slank erstatning (`packages/claw-client/src/lib/hermes/vendor/`) | MIT, © 2025 Nous Research | [LICENSE](https://github.com/NousResearch/hermes-agent/blob/main/LICENSE), [docs](https://hermes-agent.nousresearch.com/docs) |
 
----
+Forken er ikke tilknyttet, støttet eller godkjent av Thesys, OpenClaw eller Nous Research.
 
-## What you get
+## Dokumentasjon
 
-- **A workspace, not a chat log.** Agents, sessions, apps, artifacts, notifications, and crons are all first-class surfaces in the sidebar — structured and easy to navigate.
-- **Live, interactive apps.** Agents render dashboards, charts, tables, and forms as React components that stream in as the model writes them. No copy-pasting JSON, no re-prompting for the same data.
-- **Persistent and refinable.** Apps and artifacts are stored and re-rendered across turns. Update them with a prompt — they update in place instead of being regenerated from scratch.
-- **Mobile + desktop.** Responsive UI; the same workspace works on your laptop, phone, or tablet.
-- **Lives with your gateway.** The workspace is served by your OpenClaw gateway itself. If your gateway is remote, the workspace is reachable wherever the gateway is — no separate hosting, no tunnel, no CORS or allowed-origins config.
-- **Session-scoped.** Only sessions opened from OpenClaw OS get the OpenUI prompt. CLI runs, scripts, and other clients on the same gateway are unaffected.
+- [docs/HERMES.md](./docs/HERMES.md) — transport, oppsett, metodekart og verifiserte kjøringer
+- [docs/PORTING.md](./docs/PORTING.md) — porteringskart per pakke
+- [docs/ROADMAP.md](./docs/ROADMAP.md) — rekkefølge videre
+- [docs/UPSTREAM.md](./docs/UPSTREAM.md) — upstream-README for OpenClaw OS (historisk, gjelder ikke denne forken)
+- [AGENTS.md](./AGENTS.md) — arkitektur og begreper for kodeagenter
+- [SECURITY.md](./SECURITY.md), [CONTRIBUTING.md](./CONTRIBUTING.md), [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
 
----
+## Lisens
 
-
-
-## How it works
-
-OpenClaw OS ships as a single OpenClaw plugin. When the gateway loads it, two things happen:
-
-1. **The workspace UI is served from the gateway** at `http://<gateway>/plugins/openclawos`. The plugin bundles the prebuilt static export of the web client and serves it over the gateway's own HTTP route — no separate Next.js process, no tunnel, no CORS dance.
-2. **Agent runs from OpenClaw OS get an OpenUI prompt.** A `before_prompt_build` hook detects sessions originating from the workspace (by session-key suffix) and prepends an OpenUI Lang system prompt, so the LLM emits structured component markup the workspace can render.
-
-The workspace then connects back to the same gateway over the same-origin WebSocket and renders the streaming output as live React components.
-
-```mermaid
-flowchart LR
-    U["You"] -->|"open /plugins/openclawos"| G["OpenClaw Gateway"]
-    G -->|"serves bundled UI"| W["OpenClaw OS workspace"]
-    W -->|"WebSocket"| G
-    G --> A["OpenClaw Agent"]
-    A -->|"OpenUI Lang stream"| W
-    W --> R["Live apps, dashboards, charts"]
-```
-
-See [`AGENTS.md`](./AGENTS.md) for the full protocol, the plugin detection mechanism, and the agent / session / thread mental model.
-
----
-
-## Packages
-
-| Package | Description |
-| :--- | :--- |
-| [`@openuidev/openclaw-os-plugin`](./packages/claw-plugin) | The OpenClaw plugin. Bundles the workspace UI, serves it over the gateway's HTTP route, and injects the OpenUI prompt for OpenClaw OS sessions. |
-| [`@openuidev/claw-client`](./packages/claw-client) | The workspace UI itself — a Next.js app rendered with the OpenUI React renderer. Statically exported, then bundled into the plugin. |
-
-Both packages live in this monorepo and are linked via pnpm workspaces. They are versioned together for now.
-
----
-
-## Repository structure
-
-```
-openclaw-os/
-├── packages/
-│   ├── claw-client/      # Workspace UI (Next.js, statically exported)
-│   └── claw-plugin/      # OpenClaw plugin (bundles + serves the UI)
-├── scripts/              # Local helpers (open dashboard, etc.)
-├── .github/              # CI workflows + issue / PR templates
-├── AGENTS.md             # Protocol and mental-model deep dive
-├── CONTRIBUTING.md       # Development workflow
-└── README.md             # You are here
-```
-
-Good places to start:
-
-- [`packages/claw-client`](./packages/claw-client) — the workspace UI
-- [`packages/claw-plugin`](./packages/claw-plugin) — the plugin that ships and serves it
-- [`AGENTS.md`](./AGENTS.md) — gateway protocol & session model
-- [`CONTRIBUTING.md`](./CONTRIBUTING.md) — local setup, code style, PR workflow
-
----
-
-## Scripts
-
-Run from the repo root — every script fans out across the workspace.
-
-```bash
-pnpm build         # build every package
-pnpm lint          # ESLint check across packages
-pnpm lint:fix      # ESLint auto-fix
-pnpm format        # Prettier check
-pnpm format:fix    # Prettier write
-pnpm typecheck     # tsc --noEmit across packages
-pnpm test          # Vitest across packages
-pnpm ci            # full lint + format + typecheck + build (matches CI)
-```
-
----
-
-## Powered by OpenUI
-
-The workspace renders agent output using [OpenUI](https://openui.com), an open standard for generative UI. Agents emit OpenUI Lang — a structured, streamable language designed for model-generated UI:
-
-- **Streaming output** — components render incrementally as tokens arrive.
-- **Token efficient** — up to 67% fewer tokens than equivalent JSON.
-- **Controlled rendering** — agents can only emit the components defined in the workspace's library.
-- **Typed component contracts** — props are declared up front with Zod schemas.
-
-See the [OpenUI documentation](https://openui.com) and [token efficiency benchmarks](https://github.com/thesysdev/openui#token-efficiency-benchmarks) for details.
-
----
-
-## Documentation
-
-- [openui.com/openclaw-os](https://openui.com/openclaw-os) — landing page, demos, install
-- [openui.com](https://openui.com) — OpenUI Lang reference, component library, and renderer docs
-- [`AGENTS.md`](./AGENTS.md) — OpenClaw protocol, plugin detection, session model
-- [`packages/claw-client/README.md`](./packages/claw-client/README.md) — workspace UI: local dev, env, layout
-- [`packages/claw-plugin/README.md`](./packages/claw-plugin/README.md) — plugin: install, prompt regeneration
-
----
-
-## Community
-
-- [Discord](https://discord.com/invite/Pbv5PsqUSv) — Ask questions, share what you're building
-- [GitHub Issues](https://github.com/thesysdev/openclaw-os/issues) — Report bugs or request features
-- [GitHub Discussions](https://github.com/thesysdev/openclaw-os/discussions) — Longer-form questions and ideas
-
----
-
-## Contributing
-
-Contributions are welcome. See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the local setup, the code-style rules, and the pull request workflow.
-
-## License
-
-This project is available under the terms described in [`LICENSE`](./LICENSE).
+[MIT](./LICENSE). Opprinnelig opphavsrett © 2026 Thesys Inc beholdes; endringer i forken © 2026 Ole ([Olewol](https://github.com/Olewol)). Tredjepartsoversikt: [NOTICE](./NOTICE).

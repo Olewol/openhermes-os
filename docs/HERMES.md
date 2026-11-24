@@ -86,7 +86,7 @@ Status: **works** = exercised in the verified run; **code** = implemented, not e
 | `models.list` / `config.get` | model taken from `session.info` event | partial: shows the session's model, no picker |
 | `commands.list` (slash autocomplete) | `commands.catalog`-style methods exist | stub (empty list) |
 | `sessions.subscribe` / `sessions.changed` | Hermes pushes `sessions.changed` to every connection | partial (global event, no per-session key; history of a *viewed* thread is not auto-refreshed) |
-| `cron.*` | REST `/api/jobs` (not on the WS) | stub (empty), via bridge `/hermes/api/*` later |
+| `cron.*` | REST `/api/cron/jobs` (not on the WS; `hermes_cli/web_routers/cron.py:776`) | stub (empty), via bridge `/hermes/api/*` later |
 | `openclawos.apps.*` | none in Hermes | **stub** (empty list; no apps persisted) |
 | `openclawos.artifacts.*` | none | **stub** |
 | `openclawos.uploads.*` | Hermes has `image.attach` / `input.detect_drop` | **stub** |
@@ -156,7 +156,7 @@ Latency note: Hermes' model route (`auto`/manifest) took 25-100 s to the first t
 - OpenUI Lang prompt injection (Q2): hidden seed at `session.create`, later `pre_llm_call`.
 - Approval card UI wired to `respondApproval` (the engine surfaces the request as a tool card only); clarify (`request.answer`) not mapped.
 - History: use `session.history`/`session.events.since` for tool results and long sessions; refresh the open thread on `sessions.changed`.
-- Model/reasoning pickers (`model.options`, `config.set`), slash commands (`commands.*`), cron via `/api/jobs`.
+- Model/reasoning pickers (`model.options`, `config.set`), slash commands (`commands.*`), cron via `/api/cron/jobs`.
 - Label thread source (Telegram/Desktop/cron/subagent), filter out `cron`/`subagent` noise by default.
 - Remove the dead OpenClaw transport (`lib/gateway/*`, `engines/openclaw/*`) once the diff is no longer useful.
 - Dependency notes: `ws` (bridge), `concurrently` (dev:hermes), Node ≥ 20 for global `WebSocket`/`fetch` in the probes.

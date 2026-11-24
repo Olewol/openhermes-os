@@ -2,7 +2,7 @@
   "name": "@openuidev/openclaw-os-plugin",
   "version": "0.1.5",
   "type": "module",
-  "description": "OpenClaw plugin that turns agent responses into Generative UI and serves the claw-client at /plugins/openclawos.",
+  "description": "UPSTREAM OpenClaw plugin (generative UI, apps, artifacts, notifications). Not used with Hermes; to be ported (docs/PORTING.md). Not published from this fork.",
   "keywords": [
     "openclaw",
     "openclaw web ui",
@@ -14,10 +14,10 @@
     "agent-ui"
   ],
   "license": "MIT",
-  "homepage": "https://openui.com/openclaw-os",
+  "homepage": "https://github.com/Olewol/openhermes-os/blob/hermes-native/docs/PORTING.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/thesysdev/openclaw-os.git",
+    "url": "https://github.com/Olewol/openhermes-os.git",
     "directory": "packages/claw-plugin"
   },
   "main": "./dist/index.js",
@@ -68,5 +68,9 @@
       "openclawVersion": "2026.4.12",
       "pluginSdkVersion": "2026.4.12"
     }
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/Olewol/openhermes-os/issues"
+  },
+  "private": true
 }

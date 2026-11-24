@@ -2,6 +2,10 @@
 
 - ALWAYS use pnpm.
 
+> **OpenHermes OS er en fork for Hermes Agent** ([Olewol/openhermes-os](https://github.com/Olewol/openhermes-os), gren `hermes-native`). Aktiv transport er `packages/claw-client/src/lib/engines/hermes/HermesEngine.ts` (Hermes JSON-RPC over `/api/ws`). Status per metode: [`docs/HERMES.md`](./docs/HERMES.md). Hva som gjenstår å portere: [`docs/PORTING.md`](./docs/PORTING.md). Rekkefølge: [`docs/ROADMAP.md`](./docs/ROADMAP.md).
+> Seksjonene under (fra «OpenClaw Types») er **upstream-dokumentasjon for OpenClaw-modusen** (`engines/openclaw/`, `packages/claw-plugin`). De beskriver koden som skal portes, ikke hva Hermes-modusen gjør. I Hermes-modusen finnes det ingen `agents.list`; UI-et viser én syntetisk agent `hermes`, og tråder er Hermes-sesjoner (stored session id).
+> Ikke åpne PR-er eller issues mot upstream (`thesysdev/openclaw-os`, `openclaw/openclaw`) og ikke endre `~/.hermes` fra utviklingsoppgaver uten uttrykkelig avtale.
+
 ## OpenClaw Types
 
 OpenClaw types come from the `openclaw` npm package via subpath exports:

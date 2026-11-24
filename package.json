@@ -2,15 +2,15 @@
   "name": "claw-workspace",
   "private": true,
   "version": "0.0.0",
-  "description": "OpenHermes OS — Generative UI client for Hermes Agent (fork of OpenClaw OS), powered by OpenUI Lang",
-  "homepage": "https://openui.com",
+  "description": "OpenHermes OS — generative UI workspace for Hermes Agent (WIP fork of OpenClaw OS), powered by OpenUI Lang",
+  "homepage": "https://github.com/Olewol/openhermes-os#readme",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/thesysdev/openclaw-os.git"
+    "url": "https://github.com/Olewol/openhermes-os.git"
   },
   "bugs": {
-    "url": "https://github.com/thesysdev/openclaw-os/issues"
+    "url": "https://github.com/Olewol/openhermes-os/issues"
   },
   "engines": {
     "node": ">=20"
@@ -38,5 +38,6 @@
     "prettier": "^3.2.5",
     "prettier-plugin-organize-imports": "^3.2.4",
     "typescript": "^5.9.3"
-  }
+  },
+  "author": "Ole (Olewol) <https://github.com/Olewol>"
 }

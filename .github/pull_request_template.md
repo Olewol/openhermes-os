@@ -1,3 +1,5 @@
+<!-- Open this PR against `hermes-native` in Olewol/openhermes-os, not against upstream (thesysdev/openclaw-os). -->
+
 ## What
 
 Describe the change and why it is needed.
@@ -12,8 +14,8 @@ Describe how you validated this change.
 
 - [ ] Not applicable (explain why)
 - [ ] Verified locally (`pnpm ci` passes)
-- [ ] Manually tested in the Claw client
-- [ ] Manually tested the plugin end-to-end with a running OpenClaw gateway
+- [ ] Manually tested in the OpenHermes OS client against a running Hermes dashboard
+- [ ] Updated the method status in `docs/HERMES.md` / `docs/PORTING.md` if a stub became real
 
 ## Checklist
 

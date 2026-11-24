@@ -1,17 +1,25 @@
 # Security Policy
 
+OpenHermes OS is a work-in-progress fork ([Olewol/openhermes-os](https://github.com/Olewol/openhermes-os)) of [thesysdev/openclaw-os](https://github.com/thesysdev/openclaw-os) for [Hermes Agent](https://github.com/NousResearch/hermes-agent). It is **not production-ready** (see [README](./README.md)); do not expose it to untrusted networks.
+
 ## Reporting a Vulnerability
 
-We take the security of OpenClaw OS seriously. If you believe you have found a security vulnerability in either `@openuidev/claw-client` or `@openuidev/openclaw-os-plugin`, please report it to us through GitHub's Security Advisory **"Report a Vulnerability"** tab.
+Report vulnerabilities in **this fork** privately through GitHub's Security Advisory flow on this repository:
+
+1. Go to the **Security** tab of [Olewol/openhermes-os](https://github.com/Olewol/openhermes-os/security).
+2. Click **Report a vulnerability**.
+3. Describe the issue, affected commit/branch (`hermes-native`), and reproduction steps.
+
+> Note for the maintainer: private vulnerability reporting is currently **disabled** on the repository (checked 24.11.2026 via the GitHub API). Enable it under Settings → Code security before this policy is usable; until then, contact the maintainer ([Olewol](https://github.com/Olewol)) directly and **do not open a public issue** with exploit details.
 
 **Please do not report security vulnerabilities through public GitHub issues.**
 
-Instead:
+## Scope and where else to report
 
-1. Go to the **Security** tab of this repository.
-2. Click **Report a vulnerability**.
-3. Fill out the form with a description of the vulnerability, affected versions, and reproduction steps.
+| Issue is in | Report to |
+|---|---|
+| This fork (UI, `HermesEngine`, `scripts/hermes-bridge.mjs`, docs) | this repository, as above |
+| Hermes Agent itself (gateway, dashboard, plugins) | [NousResearch/hermes-agent security policy](https://github.com/NousResearch/hermes-agent/security) |
+| Unchanged upstream code that also exists in `thesysdev/openclaw-os` or OpenClaw | the respective upstream project; tell us as well so the fork can follow |
 
-We will respond as quickly as possible to your report and work with you to verify and address the issue. Once a fix is available we will coordinate disclosure with you.
-
-Thank you for helping keep OpenClaw OS and its users safe!
+The bridge (`scripts/hermes-bridge.mjs`) logs in to the Hermes dashboard with credentials from environment variables and must only listen on loopback unless you know what you are doing.

@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an idea for OpenClaw OS
+about: Suggest an idea for OpenHermes OS
 title: ""
 labels: enhancement
 assignees: ""
@@ -15,7 +15,7 @@ A clear and concise description of what you want to happen.
 **Which package would this affect?**
 
 - [ ] `@openuidev/claw-client`
-- [ ] `@openuidev/openclaw-os-plugin`
+- [ ] `@openuidev/openclaw-os-plugin` (upstream OpenClaw plugin, to be ported)
 - [ ] Both
 - [ ] Not sure
 

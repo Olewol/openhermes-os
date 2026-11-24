@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve OpenClaw OS
+about: Create a report to help us improve OpenHermes OS
 title: ""
 labels: bug
 assignees: ""
@@ -12,7 +12,7 @@ A clear and concise description of what the bug is.
 **Affected package**
 
 - [ ] `@openuidev/claw-client`
-- [ ] `@openuidev/openclaw-os-plugin`
+- [ ] `@openuidev/openclaw-os-plugin` (upstream OpenClaw plugin, to be ported)
 - [ ] Both
 - [ ] Not sure
 
@@ -36,14 +36,14 @@ If applicable, add screenshots to help explain your problem.
 - Browser: [e.g. Chrome 122, Safari 17]
 - Node version: [e.g. 20.11.1]
 - pnpm version: [e.g. 9.15.4]
-- OpenClaw gateway version: [e.g. 0.4.0]
+- Hermes Agent version: [output of `hermes --version`]
 - `@openuidev/claw-client` version: [e.g. 0.1.0]
-- `@openuidev/openclaw-os-plugin` version: [e.g. 0.1.1]
+- Branch / commit of openhermes-os: [e.g. hermes-native @ df710e7]
 
-**Gateway logs**
+**Bridge / gateway logs**
 
 ```
-Paste relevant gateway logs here (especially around the failing request).
+Paste relevant bridge (`pnpm bridge`) and Hermes gateway logs here (especially around the failing request).
 ```
 
 **Browser console / network logs**

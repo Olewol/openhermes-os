@@ -16,6 +16,8 @@ on:
 
 jobs:
   publish:
+    # OpenHermes OS fork: the @openuidev npm scope belongs to Thesys; never publish from the fork.
+    if: github.repository == 'thesysdev/openclaw-os'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
