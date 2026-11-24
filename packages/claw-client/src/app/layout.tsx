@@ -5,14 +5,14 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Claw",
-  description: "Generative UI client for OpenClaw",
+  title: "OpenHermes OS",
+  description: "Generative UI client for Hermes Agent (fork of OpenClaw OS)",
   icons: { icon: "/favicon.svg", apple: "/favicon.svg" },
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Claw",
+    title: "OpenHermes OS",
   },
 };
 

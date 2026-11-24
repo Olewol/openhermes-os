@@ -18,7 +18,7 @@ import {
 import { resolveChatSessionKey } from "@/lib/chat/useGateway";
 import { isTabHidden, playCompletionChime } from "@/lib/chime";
 import type { CommandContext, CommandMessageSnapshot } from "@/lib/commands";
-import type { CompactSessionResult } from "@/lib/engines/openclaw/OpenClawEngine";
+import type { CompactSessionResult } from "@/lib/engines/hermes/HermesEngine";
 import type {
   AppRecord,
   AppStore,

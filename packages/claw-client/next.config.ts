@@ -8,6 +8,8 @@ const isStaticExport = process.env["NEXT_OUTPUT"] !== "server";
 
 const nextConfig: NextConfig = {
   ...(isStaticExport ? { output: "export" as const, basePath: "/plugins/openclawos", assetPrefix: "/plugins/openclawos" } : {}),
+  // OpenHermes OS: dev server is opened via 127.0.0.1 / localhost (HMR websocket is otherwise blocked).
+  allowedDevOrigins: ["127.0.0.1", "localhost"],
   reactStrictMode: false,
   images: {
     unoptimized: true,

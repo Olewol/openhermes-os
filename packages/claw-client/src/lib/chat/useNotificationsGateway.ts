@@ -1,6 +1,6 @@
 "use client";
 
-import type { OpenClawEngine } from "@/lib/engines/openclaw/OpenClawEngine";
+import type { HermesEngine as OpenClawEngine } from "@/lib/engines/hermes/HermesEngine";
 import { shouldSurfaceNotification, type NotificationRecord } from "@/lib/notifications";
 import { useCallback, useState, type Dispatch, type RefObject, type SetStateAction } from "react";
 

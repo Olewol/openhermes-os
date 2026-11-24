@@ -1,7 +1,7 @@
 "use client";
 
 import type { CronJobRecord, CronRunEntry, CronStatusRecord } from "@/lib/cron";
-import type { OpenClawEngine } from "@/lib/engines/openclaw/OpenClawEngine";
+import type { HermesEngine as OpenClawEngine } from "@/lib/engines/hermes/HermesEngine";
 import { ConnectionState } from "@/lib/gateway/types";
 import { shouldSurfaceNotification, type NotificationRecord } from "@/lib/notifications";
 import {

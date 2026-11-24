@@ -1,6 +1,6 @@
 "use client";
 
-import { resolveChatSessionKey } from "@/lib/engines/openclaw/OpenClawEngine";
+import { resolveChatSessionKey } from "@/lib/engines/hermes/HermesEngine";
 
 /**
  * Reverse the `agentId -> sessionKey` lookup: given a session key, find

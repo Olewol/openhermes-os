@@ -2,10 +2,11 @@
 
 import { separateContentAndContext } from "@/lib/content-parser";
 import {
-  OpenClawEngine,
+  HermesEngine,
+  defaultBridgeUrl,
   resolveChatSessionKey,
   type CompactSessionResult,
-} from "@/lib/engines/openclaw/OpenClawEngine";
+} from "@/lib/engines/hermes/HermesEngine";
 import type {
   AppStore,
   ArtifactStore,
@@ -89,7 +90,7 @@ export function useGateway({ onAuthFailed }: { onAuthFailed: () => void }) {
 
   const knownAgentIds = useRef<Set<string>>(new Set());
   const attemptedAutoTitlesRef = useRef<Map<string, string>>(new Map());
-  const engineRef = useRef<OpenClawEngine | null>(null);
+  const engineRef = useRef<HermesEngine | null>(null);
   const sessionMetaRef = useRef(sessionMeta);
   // Subscribers for `sessions.changed` broadcasts — populated by consumers
   // via `onSessionChanged(...)` and drained when the gateway fires an event.
@@ -139,14 +140,12 @@ export function useGateway({ onAuthFailed }: { onAuthFailed: () => void }) {
 
   useEffect(() => {
     const s = getSettings();
-    const engine = new OpenClawEngine(
+    const engine = new HermesEngine(
       {
         id: "default",
         name: "Default",
         enabled: true,
-        gatewayUrl: s?.gatewayUrl ?? "",
-        token: s?.token,
-        deviceToken: s?.deviceToken,
+        gatewayUrl: s?.gatewayUrl ?? defaultBridgeUrl(),
       },
       {
         onConnectionStateChange: setConnectionState,

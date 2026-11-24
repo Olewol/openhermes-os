@@ -338,7 +338,7 @@ function MobileNavSheet({
       >
         <header className="sticky top-0 z-10 flex items-center justify-between bg-background px-ml py-m">
           <h2 className="font-heading text-lg font-bold">
-            <span className="text-text-neutral-primary">OpenClaw</span>
+            <span className="text-text-neutral-primary">OpenHermes</span>
             <span className="ml-2xs font-medium text-text-neutral-tertiary">OS</span>
           </h2>
           <HeaderIconButton onClick={onClose} label="Close navigation">

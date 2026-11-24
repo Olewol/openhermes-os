@@ -21,7 +21,7 @@ import { useNotificationToasts } from "@/lib/chat/useNotificationToasts";
 import { usePinnedApps } from "@/lib/chat/usePinnedApps";
 import { useThreadWorkspaces } from "@/lib/chat/useThreadWorkspaces";
 import type { CronJobRecord, CronRunEntry, CronStatusRecord } from "@/lib/cron";
-import type { CompactSessionResult } from "@/lib/engines/openclaw/OpenClawEngine";
+import type { CompactSessionResult } from "@/lib/engines/hermes/HermesEngine";
 import type {
   AppRecord,
   AppStore,
@@ -43,7 +43,6 @@ import {
   uploadMetaToThreadUpload,
   type ThreadWorkspaceState,
 } from "@/lib/session-workspace";
-import { getSettings } from "@/lib/storage";
 import type { ClawThread } from "@/types/claw-thread";
 import type { ModelChoice, SessionRow } from "@/types/gateway-responses";
 import {
@@ -725,7 +724,7 @@ function ChatAppInner({
   if (isMobile) {
     return (
       <ChatAppProvider value={contextValue}>
-        <Shell.Container agentName="Claw" logoUrl={LOGO_URL}>
+        <Shell.Container agentName="Hermes" logoUrl={LOGO_URL}>
           <MobileShell
             route={route}
             unreadNotificationCount={unreadNotificationCount}
@@ -764,7 +763,7 @@ function ChatAppInner({
 
   return (
     <ChatAppProvider value={contextValue}>
-      <Shell.Container agentName="Claw" logoUrl={LOGO_URL}>
+      <Shell.Container agentName="Hermes" logoUrl={LOGO_URL}>
         <RouteSidebarSync collapse={route.view === "app" || route.view === "artifact"} />
         <AppSidebar
           connectionState={connectionState}
@@ -921,10 +920,8 @@ export default function ChatApp() {
     [apps, refreshAppList],
   );
 
-  // Auto-open settings on first visit (no gateway URL configured)
-  useEffect(() => {
-    if (!getSettings()?.gatewayUrl) setSettingsOpen(true);
-  }, []);
+  // OpenHermes OS: the bridge URL has a default (HermesEngine.defaultBridgeUrl), so the
+  // settings dialog is no longer forced open on first visit.
 
   const { adaptedFetchThreadList, adaptedLoadThread } = useChatProviderAdapters({
     fetchThreadList,

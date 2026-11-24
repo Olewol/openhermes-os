@@ -1,3 +1,11 @@
+# OpenHermes OS
+
+> **Fork of [thesysdev/openclaw-os](https://github.com/thesysdev/openclaw-os) (MIT)** that talks to **Hermes Agent's native gateway protocol** (`/api/ws`, JSON-RPC) instead of the OpenClaw gateway. Branch: `hermes-native`.
+> Setup, method map (works / stub / missing) and open items: **[docs/HERMES.md](./docs/HERMES.md)**.
+> The rest of this README is the unchanged upstream text for OpenClaw OS.
+
+---
+
 <div align="center">
 
 <a href="https://www.openui.com/openclaw-os" target="_blank" rel="noopener noreferrer">

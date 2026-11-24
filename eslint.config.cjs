@@ -14,6 +14,8 @@ module.exports = [
       "**/.next/**",
       "**/.wrangler/**",
       "**/.open-next/**",
+      // vendored from Hermes Agent (MIT); kept byte-close to upstream, see docs/HERMES.md
+      "**/lib/hermes/vendor/**",
       "**/src/generated/**",
       "**/next-env.d.ts",
       "**/*.tsbuildinfo",
