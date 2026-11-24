@@ -1,5 +1,9 @@
 # OpenHermes OS
 
+> ## ⚠️ WIP — under arbeid, ikke klart til bruk (24.11.2026)
+> Dette prosjektet er under aktiv utvikling og **kan ikke brukes i produksjon ennå**. Flere funksjoner (apps, artefakter, varsler, cron, opplasting, modellvelger, slash-kommandoer) er stubbet eller mangler. Status per metode: **[docs/HERMES.md](./docs/HERMES.md)**.
+
+
 > **Fork of [thesysdev/openclaw-os](https://github.com/thesysdev/openclaw-os) (MIT)** that talks to **Hermes Agent's native gateway protocol** (`/api/ws`, JSON-RPC) instead of the OpenClaw gateway. Branch: `hermes-native`.
 > Setup, method map (works / stub / missing) and open items: **[docs/HERMES.md](./docs/HERMES.md)**.
 > The rest of this README is the unchanged upstream text for OpenClaw OS.
